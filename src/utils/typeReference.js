@@ -1,15 +1,15 @@
-export const typeReference = {
-    F: "Food & Beverage",
-    P: "Pharmaceuticals",
-    G: "Government",
-    T: "Traditional Medicine & Supplement",
-    B: "Beauty, Cosmetics & Personal Care",
-    M: "Media RTU",
-    K: "K3 Products",
-    A: "ALKES & PKRT",
-    E: "Feed, Pesticides & PSAT",
-    O: "Others",
-    R: "Research / Academic Purpose",
-    D: "Dioxine Udara",
+const typeReference = {
+    1: "Food & Beverage",
+    2: "Pharmaceuticals",
+    3: "Government",
+    4: "Traditional Medicine & Supplement",
+    13: "Beauty, Cosmetics & Personal Care",
+    14: "Media RTU",
+    15: "K3 Products",
+    16: "ALKES & PKRT",
+    17: "Feed, Pesticides & PSAT",
+    18: "Others",
+    19: "Research / Academic Purpose",
+    20: "Dioxine Udara",
 };
   

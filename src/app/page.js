@@ -1,6 +1,8 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { fetchData } from "../utils/fetchData";
-import DataTable from "../components/DataTable";
+import DataTable from "../components/DataTable/DataTable";
 import Filters from "../components/Filters";
 import Popup from "../components/Popup";
 
