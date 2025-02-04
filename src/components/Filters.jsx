@@ -65,8 +65,23 @@ export default function Filters({ data, setFilteredData }) {
           <option value="">Semua</option>
           <option value="Food & Beverage">Food & Beverage</option>
           <option value="Pharmaceuticals">Pharmaceuticals</option>
-          <option value="Government">Government</option>
-          {/* Tambahkan opsi lain sesuai typeReference */}
+          <option value="Traditional Medicine & Supplement">
+            Traditional Medicine & Supplement
+          </option>
+          <option value="Beauty, Cosmetics & Personal Care">
+            Beauty, Cosmetics & Personal Care
+          </option>
+          <option value="Media RTU">Media RTU</option>
+          <option value="K3 Products">K3 Products</option>
+          <option value="ALKES & PKRT">ALKES & PKRT</option>
+          <option value="Feed, Pesticides & PSAT">
+            Feed, Pesticides & PSAT
+          </option>
+          <option value="Others">Others</option>
+          <option value="Research / Academic Purpose">
+            Research / Academic Purpose
+          </option>
+          <option value="Dioxine Udara">Dioxine Udara</option>
         </select>
       </div>
 
