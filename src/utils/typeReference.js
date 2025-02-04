@@ -1,4 +1,4 @@
-const typeReference = {
+export const typeReference = {
     1: "Food & Beverage",
     2: "Pharmaceuticals",
     3: "Government",
