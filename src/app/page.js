@@ -15,12 +15,22 @@ export default function Home() {
   const itemsPerPage = 100;
 
   useEffect(() => {
-    const email = "youremail";
+    const email = "yourmail"; 
     fetchData(email).then((result) => {
       setData(result);
       setFilteredData(result);
     });
   }, []);
+
+  useEffect(() => {
+    filteredData.forEach((item) => {
+      if (item.discount > 0 && item.discount < 1000000) {
+        setPopup({ show: true, message: "Discount available" });
+      } else if (item.discount >= 1000000) {
+        setPopup({ show: true, message: "Approval needed for high discount" });
+      }
+    });
+  }, [filteredData]);
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
@@ -34,14 +44,21 @@ export default function Home() {
   );
 
   return (
-    <div className="p-4">
-      <Filters data={data} setFilteredData={setFilteredData} />
-      <DataTable data={paginatedData} />
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-      />
+    <div className="grid md:grid-cols-4 gap-4 p-4">
+      {/* Filters di sisi kiri */}
+      <Filters className="col-span-1" data={data} setFilteredData={setFilteredData} />
+
+      {/* DataTable di sisi kanan */}
+      <div className="col-span-3">
+        <DataTable data={paginatedData} />
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      </div>
+
+      {/* Popup */}
       <Popup
         show={popup.show}
         message={popup.message}

@@ -28,9 +28,9 @@ export default function Filters({ data, setFilteredData }) {
   };
 
   return (
-    <div className="flex flex-col space-y-4 p-4">
+    <div className="flex flex-wrap items-center gap-4 rounded-lg bg-gray-100 p-4 shadow-md">
       {/* Filter Status */}
-      <div>
+      <div className="flex flex-col">
         <label className="block text-sm font-medium">Status</label>
         <select
           onChange={(e) => handleFilter("status", e.target.value)}
@@ -43,7 +43,7 @@ export default function Filters({ data, setFilteredData }) {
       </div>
 
       {/* Filter Attachment */}
-      <div>
+      <div className="flex flex-col">
         <label className="block text-sm font-medium">Attachment</label>
         <select
           onChange={(e) => handleFilter("attachment", e.target.value)}
@@ -56,7 +56,7 @@ export default function Filters({ data, setFilteredData }) {
       </div>
 
       {/* Filter Type */}
-      <div>
+      <div className="flex flex-col">
         <label className="block text-sm font-medium">Type</label>
         <select
           onChange={(e) => handleFilter("type", e.target.value)}
@@ -86,7 +86,7 @@ export default function Filters({ data, setFilteredData }) {
       </div>
 
       {/* Filter Discount */}
-      <div>
+      <div className="flex flex-col">
         <label className="block text-sm font-medium">Discount</label>
         <select
           onChange={(e) => handleFilter("discount", e.target.value)}
