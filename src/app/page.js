@@ -38,21 +38,17 @@ export default function Home() {
 
   useEffect(() => {
     const discountItem = paginatedData.find((item) => item.discount > 1_000_000);
-
+  
     if (discountItem) {
       setPopup({
         show: true,
         discount: discountItem.discount,
       });
-    } else if (paginatedData.some((item) => item.discount > 0)) {
-      setPopup({
-        show: true,
-        discount: paginatedData.find((item) => item.discount > 0).discount,
-      });
     } else {
       setPopup({ show: false, discount: 0 });
     }
   }, [paginatedData]);
+  
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const handlePageChange = (newPage) => {
@@ -60,7 +56,7 @@ export default function Home() {
   };
 
   return (
-    <div className="p-4">
+    <div className="overflow">
       {/* Filters */}
       <Filters data={data} setFilteredData={setFilteredData} />
 
