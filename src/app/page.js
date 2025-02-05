@@ -1,69 +1,64 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { fetchData } from "../utils/fetchData";
 import DataTable from "../components/DataTable/DataTable";
 import Filters from "../components/Filters";
-import Popup from "../components/Popup";
+import ModalPopup from "../components/ModalPopup";
 import Pagination from "../components/Pagination";
 
 export default function Home() {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [popup, setPopup] = useState({ show: false, message: "" });
+  const [popup, setPopup] = useState({ show: false, discount: 0 });
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 100;
 
   useEffect(() => {
-    const email = "yourmail"; 
+    const email = "youremail";
     fetchData(email).then((result) => {
       setData(result);
-      setFilteredData(result);
     });
   }, []);
 
+  const transformedData = useMemo(() => data, [data]);
+
   useEffect(() => {
-    filteredData.forEach((item) => {
-      if (item.discount > 0 && item.discount < 1000000) {
-        setPopup({ show: true, message: "Discount available" });
-      } else if (item.discount >= 1000000) {
-        setPopup({ show: true, message: "Approval needed for high discount" });
-      }
-    });
-  }, [filteredData]);
+    setFilteredData(transformedData);
+    setCurrentPage(1);
+  }, [transformedData]);
+
+  const paginatedData = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredData.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredData, currentPage]);
+
+  useEffect(() => {
+    const discountItem = paginatedData.find((item) => item.discount > 0);
+    if (discountItem) {
+      setPopup({
+        show: true,
+        discount: discountItem.discount,
+      });
+    } else {
+      setPopup({ show: false, discount: 0 });
+    }
+  }, [paginatedData]);
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
-
-  const paginatedData = filteredData.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
   return (
-    <div className="grid md:grid-cols-4 gap-4 p-4">
-      {/* Filters di sisi kiri */}
-      <Filters className="col-span-1" data={data} setFilteredData={setFilteredData} />
+    <div className="p-4">
+      <Filters data={data} setFilteredData={setFilteredData} />
+      <DataTable data={paginatedData} />
 
-      {/* DataTable di sisi kanan */}
-      <div className="col-span-3">
-        <DataTable data={paginatedData} />
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
-      </div>
-
-      {/* Popup */}
-      <Popup
+      {/* <ModalPopup
         show={popup.show}
-        message={popup.message}
-        onClose={() => setPopup({ show: false, message: "" })}
-      />
+        discount={popup.discount}
+        onClose={() => setPopup({ show: false, discount: 0 })}
+      /> */}
+
+      <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
     </div>
   );
 }
