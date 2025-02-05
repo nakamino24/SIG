@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
+import { useSearchParams, useRouter } from "next/navigation"; 
 import { fetchData } from "../utils/fetchData";
 import DataTable from "../components/DataTable/DataTable";
 import Filters from "../components/Filters";
@@ -8,12 +9,15 @@ import ModalPopup from "../components/ModalPopup";
 import Pagination from "../components/Pagination";
 
 export default function Home() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [popup, setPopup] = useState({ show: false, discount: 0 });
-  const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 100;
+  const currentPage = Number(searchParams.get("page")) || 1;
 
+  // Fetch data dari API
   useEffect(() => {
     const email = "youremail";
     fetchData(email).then((result) => {
@@ -25,7 +29,6 @@ export default function Home() {
 
   useEffect(() => {
     setFilteredData(transformedData);
-    setCurrentPage(1);
   }, [transformedData]);
 
   const paginatedData = useMemo(() => {
@@ -34,11 +37,17 @@ export default function Home() {
   }, [filteredData, currentPage]);
 
   useEffect(() => {
-    const discountItem = paginatedData.find((item) => item.discount > 0);
+    const discountItem = paginatedData.find((item) => item.discount > 1_000_000);
+
     if (discountItem) {
       setPopup({
         show: true,
         discount: discountItem.discount,
+      });
+    } else if (paginatedData.some((item) => item.discount > 0)) {
+      setPopup({
+        show: true,
+        discount: paginatedData.find((item) => item.discount > 0).discount,
       });
     } else {
       setPopup({ show: false, discount: 0 });
@@ -46,19 +55,31 @@ export default function Home() {
   }, [paginatedData]);
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const handlePageChange = (newPage) => {
+    router.push(`?page=${newPage}`);
+  };
 
   return (
     <div className="p-4">
+      {/* Filters */}
       <Filters data={data} setFilteredData={setFilteredData} />
+
+      {/* Data Table */}
       <DataTable data={paginatedData} />
 
-      {/* <ModalPopup
+      {/* Modal Popup */}
+      <ModalPopup
         show={popup.show}
         discount={popup.discount}
         onClose={() => setPopup({ show: false, discount: 0 })}
-      /> */}
+      />
 
-      <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+      {/* Pagination */}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 }
