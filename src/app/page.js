@@ -1,21 +1,20 @@
-"use client";
-
+// Tidak perlu lagi "useSearchParams"
 import { useEffect, useState, useMemo } from "react";
-import { useSearchParams, useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 import { fetchData } from "../utils/fetchData";
 import DataTable from "../components/DataTable/DataTable";
 import Filters from "../components/Filters";
 import ModalPopup from "../components/ModalPopup";
 import Pagination from "../components/Pagination";
 
-export default function Home() {
-  const searchParams = useSearchParams();
+export default function Home({ searchParams }) {
   const router = useRouter();
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [popup, setPopup] = useState({ show: false, discount: 0 });
+
   const itemsPerPage = 100;
-  const currentPage = Number(searchParams.get("page")) || 1;
+  const currentPage = Number(searchParams.page) || 1; // Gunakan query params dari server
 
   // Fetch data dari API
   useEffect(() => {
@@ -38,7 +37,7 @@ export default function Home() {
 
   useEffect(() => {
     const discountItem = paginatedData.find((item) => item.discount > 1_000_000);
-  
+
     if (discountItem) {
       setPopup({
         show: true,
@@ -48,11 +47,11 @@ export default function Home() {
       setPopup({ show: false, discount: 0 });
     }
   }, [paginatedData]);
-  
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
   const handlePageChange = (newPage) => {
-    router.push(`?page=${newPage}`);
+    router.push(`?page=${newPage}`); // Mengubah URL sesuai page baru
   };
 
   return (

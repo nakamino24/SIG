@@ -3,16 +3,11 @@
 import clsx from "clsx";
 import Link from "next/link";
 import { generatePagination } from "@/utils/generatePagination";
-import { usePathname, useSearchParams } from "next/navigation";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 
-export default function Pagination({ totalPages }) {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const currentPage = Number(searchParams.get("page")) || 1;
-
+export default function Pagination({ totalPages, currentPage, pathname }) {
   const createPageURL = (pageNumber) => {
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams();
     params.set("page", pageNumber.toString());
     return `${pathname}?${params.toString()}`;
   };
