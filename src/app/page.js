@@ -1,4 +1,4 @@
-// Tidak perlu lagi "useSearchParams"
+"use client";
 import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { fetchData } from "../utils/fetchData";
