@@ -14,9 +14,8 @@ export default function Home({ searchParams }) {
   const [popup, setPopup] = useState({ show: false, discount: 0 });
 
   const itemsPerPage = 100;
-  const currentPage = Number(searchParams.page) || 1; // Gunakan query params dari server
+  const currentPage = Number(searchParams.page) || 1; 
 
-  // Fetch data dari API
   useEffect(() => {
     const email = "youremail";
     fetchData(email).then((result) => {
